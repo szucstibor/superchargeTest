@@ -1,20 +1,10 @@
 package org.superchargetest.bankaccount;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountTest {
-
-
-    @BeforeAll
-    public static void setup() {
-        BankAccount account1 = new BankAccount(10000);
-        BankAccount account2 = new BankAccount(10000);
-        account1.setID(1l);
-        account2.setID(2l);
-    }
 
     @Test
     public void testDeposit() {
@@ -51,11 +41,20 @@ class BankAccountTest {
     @Test
     public void testAcountHistory(){
         BankAccount account = new BankAccount(10000);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             account.deposit(1);
         }
-        account.withdrawal(1);
+        account.printTransactions();
         assertEquals(5, account.getTransactionHistory().size());
     }
 
+    @Test
+    public void testTransaction(){
+        BankAccount account1 = new BankAccount(10000);
+        BankAccount account2 = new BankAccount(10000);
+        account1.setID(1l);
+        account2.setID(2l);
+        account1.sendTransaction(5000, account2);
+        assertEquals(5000, account1.getBalance());
+    }
 }

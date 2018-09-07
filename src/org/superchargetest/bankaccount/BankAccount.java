@@ -97,6 +97,11 @@ public class BankAccount {
     public void sendTransaction(int amount, BankAccount to) {
         if (amount > this.getBalance()) {
             throw new IllegalArgumentException("You can't send more than your balance.\nYour balance is: " + this.getBalance());
+        } else if (amount < 0){
+            throw new IllegalArgumentException("Please enter a positive number, greater than 0 for transactions");
+        }
+        else if (to.equals(this)){
+            throw new IllegalArgumentException("You can't transfer to yourself");
         }
         to.receiveTransaction(amount, this);
         this.balance -= amount;
