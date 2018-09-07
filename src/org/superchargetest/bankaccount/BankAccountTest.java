@@ -1,84 +1,82 @@
 package org.superchargetest.bankaccount;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountTest {
 
+    private static BankAccount account1 = new BankAccount(10000, 1l);
+    private static BankAccount account2 = new BankAccount(10000, 2l);
+
+    @BeforeEach
+    public void reset() {
+        account1.setBalance(10000);
+        account1.setTransactionHistory(new ArrayList<>());
+
+        account2.setBalance(10000);
+        account2.setTransactionHistory(new ArrayList<>());
+    }
+
+
     @Test
     public void testDeposit() {
-        BankAccount account = new BankAccount(10000);
-        account.deposit(1000);
-        assertEquals(11000, account.getBalance());
+        account1.deposit(1000);
+        assertEquals(11000, account1.getBalance());
     }
 
     @Test
     public void testDepositThrowsException() {
-        BankAccount account = new BankAccount(10000);
-        assertThrows(IllegalArgumentException.class, () -> account.deposit(-1));
+        assertThrows(IllegalArgumentException.class, () -> account1.deposit(-1));
     }
 
     @Test
     public void testWithdrawal() {
-        BankAccount account = new BankAccount(10000);
-        account.withdrawal(1000);
-        assertEquals(9000, account.getBalance());
+        account1.withdrawal(1000);
+        assertEquals(9000, account1.getBalance());
     }
 
     @Test
     public void testWithdrawalThrowsExceptionWhenOverBalance() {
-        BankAccount account = new BankAccount(10000);
-        assertThrows(IllegalArgumentException.class, () -> account.withdrawal(10001));
+        assertThrows(IllegalArgumentException.class, () -> account1.withdrawal(10001));
     }
 
     @Test
     public void testWithDrawalThrowsExceptionWhenIncorrectAmountEntered() {
-        BankAccount account = new BankAccount(10000);
-        assertThrows(IllegalArgumentException.class, () -> account.withdrawal(0));
+        assertThrows(IllegalArgumentException.class, () -> account1.withdrawal(0));
     }
 
     @Test
-    public void testAcountHistory(){
-        BankAccount account = new BankAccount(10000);
+    public void testAcountHistory() {
         for (int i = 0; i < 5; i++) {
-            account.deposit(1);
+            account1.deposit(1);
         }
-        account.printTransactions();
-        assertEquals(5, account.getTransactionHistory().size());
+        assertEquals(5, account1.getTransactionHistory().size());
     }
 
     @Test
-    public void testTransaction(){
-        BankAccount account1 = new BankAccount(10000);
-        BankAccount account2 = new BankAccount(10000);
-        account1.setID(1l);
-        account2.setID(2l);
+    public void testTransaction() {
+        System.out.println(account1.getBalance());
+        System.out.println(account2.getBalance());
         account1.sendTransaction(5000, account2);
         assertEquals(5000, account1.getBalance());
     }
 
     @Test
-    public void testTransactionThrowsExceptionForNegativeInput(){
-        BankAccount account1 = new BankAccount(10000);
-        BankAccount account2 = new BankAccount(10000);
-        account1.setID(1l);
-        account2.setID(2l);
-        assertThrows(IllegalArgumentException.class, ()-> account1.sendTransaction(-1, account2));
+    public void testTransactionThrowsExceptionForNegativeInput() {
+        assertThrows(IllegalArgumentException.class, () -> account1.sendTransaction(-1, account2));
     }
 
     @Test
-    public void testTransactionForThrowingExceptionForMoreThanBalance(){
-        BankAccount account1 = new BankAccount(10000);
-        BankAccount account2 = new BankAccount(10000);
-        account1.setID(1l);
-        account2.setID(2l);
-        assertThrows(IllegalArgumentException.class, ()-> account1.sendTransaction(10001, account2));
+    public void testTransactionForThrowingExceptionForMoreThanBalance() {
+        assertThrows(IllegalArgumentException.class, () -> account1.sendTransaction(10001, account2));
     }
 
     @Test
-    public void testForSelfTransactionThrowsException(){
-        BankAccount account = new BankAccount(10000);
-        assertThrows(IllegalArgumentException.class, ()->account.sendTransaction(5000, account));
+    public void testForSelfTransactionThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> account1.sendTransaction(5000, account1));
     }
 }
