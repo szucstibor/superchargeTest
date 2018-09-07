@@ -82,10 +82,10 @@ public class BankAccount {
         }
     }
 
-    public void printTransactionsByType(String type) {
+    public void printTransactionsByType(String filterType) {
         System.out.println("Type, Date, Amount, Balance");
         for (String[] history : transactionHistory) {
-            if (history[0].equals(type)) {
+            if (filterType.equals("type") ? history[0].equals(filterType) : history[1].equals(filterType)) {
                 for (String field : history) {
                     System.out.print(field + ", ");
                 }
