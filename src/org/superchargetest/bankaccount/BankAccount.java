@@ -33,4 +33,12 @@ public class BankAccount {
     public void setTransactionHistory(List<String> transactionHistory) {
         this.transactionHistory = transactionHistory;
     }
+
+    public void withdraw(int amount){
+        if (amount > this.balance){
+            throw new IllegalArgumentException("Your balance is lower than the requested amount.\nYour current balnce is: " + this.balance);
+        }
+        this.balance -= amount;
+        System.out.println("You have withdrawed " + amount + ".\nYour new balance is: " + this.balance);
+    }
 }
