@@ -57,4 +57,28 @@ class BankAccountTest {
         account1.sendTransaction(5000, account2);
         assertEquals(5000, account1.getBalance());
     }
+
+    @Test
+    public void testTransactionThrowsExceptionForNegativeInput(){
+        BankAccount account1 = new BankAccount(10000);
+        BankAccount account2 = new BankAccount(10000);
+        account1.setID(1l);
+        account2.setID(2l);
+        assertThrows(IllegalArgumentException.class, ()-> account1.sendTransaction(-1, account2));
+    }
+
+    @Test
+    public void testTransactionForThrowingExceptionForMoreThanBalance(){
+        BankAccount account1 = new BankAccount(10000);
+        BankAccount account2 = new BankAccount(10000);
+        account1.setID(1l);
+        account2.setID(2l);
+        assertThrows(IllegalArgumentException.class, ()-> account1.sendTransaction(10001, account2));
+    }
+
+    @Test
+    public void testForSelfTransactionThrowsException(){
+        BankAccount account = new BankAccount(10000);
+        assertThrows(IllegalArgumentException.class, ()->account.sendTransaction(5000, account));
+    }
 }
